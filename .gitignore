@@ -7,6 +7,7 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
 node_modules
 dist
 dist-ssr
@@ -22,3 +23,46 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# =====================
+# SECURITY — Sensitive files MUST NEVER be committed
+# =====================
+
+# Environment & secrets (de az .env.example template tracked!)
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+*.p12
+*.pfx
+*.jks
+*.keystore
+
+# Credential stores (git, npm, docker, etc.)
+.github-credentials
+.git-credentials
+.npmrc
+.docker/config.json
+
+# Token & auth files
+*token*
+*secret*
+*credential*
+*auth*.json
+
+# SSH keys
+id_rsa
+id_rsa.pub
+id_ed25519
+id_ed25519.pub
+*.pub
+known_hosts
+authorized_keys
+
+# OS temp files
+Thumbs.db
+.DS_Store
+*.tmp
+*.swp
+*~
