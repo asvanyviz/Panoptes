@@ -15,7 +15,7 @@
 
   <main class="dashboard-main">
     <h1>Overview</h1>
-    <p>Welcome to the Panoptes dashboard.</p>
+    <p>Welcome to Panoptes — system monitoring &amp; control.</p>
   </main>
 
   <aside class="dashboard-log">
