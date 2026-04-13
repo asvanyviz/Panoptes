@@ -1,25 +1,41 @@
 <script lang="ts">
-  interface LogEntry {
-    time: string;
-    level: 'info' | 'warn' | 'error';
-    message: string;
+  import { getLive } from '$lib/api/client';
+  import type { LiveEntry } from '$lib/api/types';
+
+  let entries: { time: string; level: string; message: string }[] = $state([
+    { time: '–', level: 'info', message: 'Betöltés…' },
+  ]);
+  let lastRefresh = $state('');
+
+  async function fetchLive() {
+    try {
+      const data = await getLive(30);
+      entries = data.entries.map(e => ({
+        time: new Date(e.timestamp).toLocaleTimeString('hu-HU', { hour: '2-digit', minute: '2-digit' }),
+        level: e.event || 'info',
+        message: e.message || e.agent || '–',
+      }));
+      lastRefresh = new Date().toLocaleTimeString('hu-HU');
+    } catch {
+      // Keep previous data — graceful degradation
+    }
   }
 
-  let entries: LogEntry[] = $state([
-    { time: '09:00', level: 'info', message: 'Dashboard loaded' },
-    { time: '09:01', level: 'info', message: 'Connected to backend' },
-    { time: '09:02', level: 'warn', message: 'Slow query detected (1.2s)' },
-    { time: '09:05', level: 'info', message: 'Health check passed' },
-  ]);
+  fetchLive();
+  const interval = setInterval(fetchLive, 10000);
+  $effect(() => () => clearInterval(interval));
 </script>
 
 <div class="activity-log">
-  <h3 class="log-header">Activity Log</h3>
+  <div class="log-header">
+    <h3>Activity Log</h3>
+    <span class="last-refresh">{lastRefresh}</span>
+  </div>
   <div class="log-entries">
     {#each entries as entry}
       <div class="log-entry">
         <span class="log-time">{entry.time}</span>
-        <span class="log-badge {entry.level}">{entry.level}</span>
+        <span class="log-badge {entry.level.toLowerCase() === 'error' ? 'error' : entry.level.toLowerCase() === 'warn' ? 'warn' : 'info'}">{entry.level}</span>
         <span class="log-msg">{entry.message}</span>
       </div>
     {/each}
@@ -34,18 +50,31 @@
   }
 
   .log-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .log-header h3 {
     font-size: 13px;
     text-transform: uppercase;
     letter-spacing: 0.8px;
     color: var(--fg-dim);
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--border);
     margin: 0;
+  }
+
+  .last-refresh {
+    font-size: 11px;
+    color: var(--fg-dim);
+    font-family: var(--mono);
   }
 
   .log-entries {
     overflow-y: auto;
     padding: 8px 0;
+    flex: 1;
   }
 
   .log-entry {
@@ -65,7 +94,7 @@
     color: var(--fg-dim);
     font-size: 11px;
     flex-shrink: 0;
-    width: 36px;
+    width: 44px;
   }
 
   .log-badge {
@@ -99,5 +128,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    flex: 1;
   }
 </style>

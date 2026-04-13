@@ -4,23 +4,35 @@
   import SettingsIcon from '../lib/icons/SettingsIcon.svelte';
   import MonitorIcon from '../lib/icons/MonitorIcon.svelte';
 
+  type ViewName = 'overview' | 'dashboard' | 'system' | 'settings';
+
+  let { currentView = $bindable('overview') }: { currentView: ViewName } = $props();
+
   interface NavItem {
+    id: ViewName;
     label: string;
     icon: typeof HomeIcon;
-    active: boolean;
   }
 
-  let items: NavItem[] = $state([
-    { label: 'Overview', icon: HomeIcon, active: true },
-    { label: 'Dashboard', icon: DashboardIcon, active: false },
-    { label: 'Targets', icon: MonitorIcon, active: false },
-    { label: 'Settings', icon: SettingsIcon, active: false },
-  ]);
+  const items: NavItem[] = [
+    { id: 'overview', label: 'Overview', icon: HomeIcon },
+    { id: 'dashboard', label: 'Dashboard', icon: DashboardIcon },
+    { id: 'system', label: 'Rendszer', icon: MonitorIcon },
+    { id: 'settings', label: 'Settings', icon: SettingsIcon },
+  ];
+
+  function select(id: ViewName) {
+    currentView = id;
+  }
 </script>
 
 <nav class="sidebar-nav">
   {#each items as item}
-    <button class="nav-item" class:active={item.active}>
+    <button
+      class="nav-item"
+      class:active={currentView === item.id}
+      onclick={() => select(item.id)}
+    >
       <item.icon />
       <span>{item.label}</span>
     </button>

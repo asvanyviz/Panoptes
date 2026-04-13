@@ -68,11 +68,18 @@ export interface SystemInfo {
   bootTime: string | null;
   cpuPercent: number | null;
   cpuCores: number;
+  loadAvg1: number | null;
+  loadAvg5: number | null;
+  loadAvg15: number | null;
   memUsedMB: number | null;
   memTotalMB: number | null;
   memPercent: number | null;
   diskFreeGB: number | null;
   diskTotalGB: number | null;
+  ioReadMBs: number | null;
+  ioWriteMBs: number | null;
+  netDownMBs: number | null;
+  netUpMBs: number | null;
   platform: string | null;
   pythonVersion: string | null;
 }
