@@ -2,20 +2,32 @@
   import './app.css';
   import Sidebar from './components/Sidebar.svelte';
   import ActivityLog from './components/ActivityLog.svelte';
-  import System from './views/System.svelte';
-  import Agents from './views/Agents.svelte';
-  import Memory from './views/Memory.svelte';
-  import Sessions from './views/Sessions.svelte';
+  import Attekintes from './views/Attekintes.svelte';
+  import Problemak from './views/Problemak.svelte';
+  import InfraAuditok from './views/InfraAuditok.svelte';
+  import InfraCron from './views/InfraCron.svelte';
+  import InfraHeartbeat from './views/InfraHeartbeat.svelte';
+  import InfraPszichologia from './views/InfraPszichologia.svelte';
+  import InfraToken from './views/InfraToken.svelte';
+  import AgentVegrehajtok from './views/AgentVegrehajtok.svelte';
+  import AgentTanacsadok from './views/AgentTanacsadok.svelte';
+  import AgentSpecialistak from './views/AgentSpecialistak.svelte';
 
-  type ViewName = 'overview' | 'dashboard' | 'system' | 'agents' | 'memory' | 'memory-health' | 'memory-insights' | 'memory-learnings' | 'sessions' | 'settings';
+  type ViewName =
+    | 'rendszer-attekintes'
+    | 'rendszer-problemak'
+    | 'infra-auditok'
+    | 'infra-cron'
+    | 'infra-heartbeat'
+    | 'infra-memory'
+    | 'infra-pszichologia'
+    | 'infra-sessions'
+    | 'infra-tokenhasznalat'
+    | 'agent-vegrehajtok'
+    | 'agent-tanacsadok'
+    | 'agent-specialistak';
 
-  let currentView: ViewName = $state('overview');
-
-  function getActiveMemoryTab(): 'health' | 'insights' | 'learnings' {
-    if (currentView === 'memory-insights') return 'insights';
-    if (currentView === 'memory-learnings') return 'learnings';
-    return 'health';
-  }
+  let currentView: ViewName = $state('rendszer-attekintes');
 </script>
 
 <div class="dashboard">
@@ -28,23 +40,30 @@
   </aside>
 
   <main class="dashboard-main">
-    {#if currentView === 'overview'}
-      <h1>Overview</h1>
-      <p>Welcome to Panoptes — system monitoring & control.</p>
-    {:else if currentView === 'dashboard'}
-      <h1>Dashboard</h1>
-      <p>Agent dashboard — all agents at a glance.</p>
-    {:else if currentView === 'system'}
-      <System />
-    {:else if currentView === 'agents'}
-      <Agents />
-    {:else if currentView === 'memory' || currentView === 'memory-health' || currentView === 'memory-insights' || currentView === 'memory-learnings'}
-      <Memory activeTab={getActiveMemoryTab()} />
-    {:else if currentView === 'sessions'}
-      <Sessions />
-    {:else if currentView === 'settings'}
-      <h1>Settings</h1>
-      <p>Settings — coming soon.</p>
+    {#if currentView === 'rendszer-attekintes'}
+      <Attekintes />
+    {:else if currentView === 'rendszer-problemak'}
+      <Problemak />
+    {:else if currentView === 'infra-auditok'}
+      <InfraAuditok />
+    {:else if currentView === 'infra-cron'}
+      <InfraCron />
+    {:else if currentView === 'infra-heartbeat'}
+      <InfraHeartbeat />
+    {:else if currentView === 'infra-memory'}
+      <InfraPszichologia />
+    {:else if currentView === 'infra-pszichologia'}
+      <InfraPszichologia />
+    {:else if currentView === 'infra-sessions'}
+      <InfraPszichologia />
+    {:else if currentView === 'infra-tokenhasznalat'}
+      <InfraToken />
+    {:else if currentView === 'agent-vegrehajtok'}
+      <AgentVegrehajtok />
+    {:else if currentView === 'agent-tanacsadok'}
+      <AgentTanacsadok />
+    {:else if currentView === 'agent-specialistak'}
+      <AgentSpecialistak />
     {/if}
   </main>
 

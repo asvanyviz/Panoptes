@@ -1,26 +1,24 @@
 <script lang="ts">
-  import HomeIcon from '../lib/icons/HomeIcon.svelte';
-  import DashboardIcon from '../lib/icons/DashboardIcon.svelte';
-  import MonitorIcon from '../lib/icons/MonitorIcon.svelte';
-  import UsersIcon from '../lib/icons/UsersIcon.svelte';
-  import BrainIcon from '../lib/icons/BrainIcon.svelte';
-  import SessionsIcon from '../lib/icons/SessionsIcon.svelte';
-  import SettingsIcon from '../lib/icons/SettingsIcon.svelte';
   import ChevronIcon from '../lib/icons/ChevronIcon.svelte';
 
   export type ViewName =
-    | 'overview'
-    | 'dashboard'
-    | 'system'
-    | 'agents'
-    | 'memory'
-    | 'memory-health'
-    | 'memory-insights'
-    | 'memory-learnings'
-    | 'sessions'
-    | 'settings';
+    // Rendszer
+    | 'rendszer-attekintes'
+    | 'rendszer-problemak'
+    // Infrastruktúra
+    | 'infra-auditok'
+    | 'infra-cron'
+    | 'infra-heartbeat'
+    | 'infra-memory'
+    | 'infra-pszichologia'
+    | 'infra-sessions'
+    | 'infra-tokenhasznalat'
+    // Agentek
+    | 'agent-vegrehajtok'
+    | 'agent-tanacsadok'
+    | 'agent-specialistak';
 
-  let { currentView = $bindable('overview') }: { currentView: ViewName } = $props();
+  let { currentView = $bindable('rendszer-attekintes') }: { currentView: ViewName } = $props();
 
   interface LeafItem {
     type: 'leaf';
@@ -39,47 +37,38 @@
   const navItems: NavEntry[] = [
     {
       type: 'group',
-      label: 'Megfigyelés',
+      label: 'Rendszer',
       children: [
-        { type: 'leaf', id: 'overview', label: 'Overview' },
-        { type: 'leaf', id: 'dashboard', label: 'Dashboard' },
+        { type: 'leaf', id: 'rendszer-attekintes', label: 'Áttekintés' },
+        { type: 'leaf', id: 'rendszer-problemak', label: 'Problémák' },
       ],
     },
     {
       type: 'group',
       label: 'Infrastruktúra',
       children: [
-        { type: 'leaf', id: 'system', label: 'Rendszer' },
-        { type: 'leaf', id: 'agents', label: 'Agentek' },
+        { type: 'leaf', id: 'infra-auditok', label: 'Auditok' },
+        { type: 'leaf', id: 'infra-cron', label: 'Cron jobs' },
+        { type: 'leaf', id: 'infra-heartbeat', label: 'Heartbeat' },
+        { type: 'leaf', id: 'infra-memory', label: 'Memória' },
+        { type: 'leaf', id: 'infra-pszichologia', label: 'Pszichológia' },
+        { type: 'leaf', id: 'infra-sessions', label: 'Sessions' },
+        { type: 'leaf', id: 'infra-tokenhasznalat', label: 'Tokenhasználat' },
       ],
     },
     {
       type: 'group',
-      label: 'Memória',
+      label: 'Agentek',
       children: [
-        { type: 'leaf', id: 'memory-health', label: 'Health' },
-        { type: 'leaf', id: 'memory-insights', label: 'Insights' },
-        { type: 'leaf', id: 'memory-learnings', label: 'Learnings' },
-      ],
-    },
-    {
-      type: 'group',
-      label: 'Kommunikáció',
-      children: [
-        { type: 'leaf', id: 'sessions', label: 'Sessions' },
-      ],
-    },
-    {
-      type: 'group',
-      label: 'Egyéb',
-      children: [
-        { type: 'leaf', id: 'settings', label: 'Settings' },
+        { type: 'leaf', id: 'agent-vegrehajtok', label: 'Végrehajtók' },
+        { type: 'leaf', id: 'agent-tanacsadok', label: 'Tanácsadók' },
+        { type: 'leaf', id: 'agent-specialistak', label: 'Specialisták' },
       ],
     },
   ];
 
-  // Track which groups are expanded
-  let expandedGroups: Set<string> = $state(new Set(['Megfigyelés', 'Infrastruktúra']));
+  // Track which groups are expanded (first group open by default)
+  let expandedGroups: Set<string> = $state(new Set(['Rendszer']));
 
   function toggleGroup(label: string) {
     if (expandedGroups.has(label)) {
@@ -98,46 +87,22 @@
     currentView = id;
   }
 
-  // Map memory sub-views to parent group auto-expand
+  // Auto-expand the group that contains the current view
   $effect(() => {
     const cv = currentView;
-    if (cv.startsWith('memory-')) {
-      if (!expandedGroups.has('Memória')) {
-        expandedGroups.add('Memória');
-        expandedGroups = new Set(expandedGroups);
+    for (const group of navItems) {
+      if (group.type === 'group') {
+        for (const child of group.children) {
+          if (child.id === cv) {
+            if (!expandedGroups.has(group.label)) {
+              expandedGroups.add(group.label);
+              expandedGroups = new Set(expandedGroups);
+            }
+          }
+        }
       }
     }
   });
-
-  function getIcon(id: ViewName) {
-    switch (id) {
-      case 'overview': return HomeIcon;
-      case 'dashboard': return DashboardIcon;
-      case 'system': return MonitorIcon;
-      case 'agents': return UsersIcon;
-      case 'memory':
-      case 'memory-health':
-      case 'memory-insights':
-      case 'memory-learnings': return BrainIcon;
-      case 'sessions': return SessionsIcon;
-      case 'settings': return SettingsIcon;
-      default: return HomeIcon;
-    }
-  }
-
-  function isActive(id: ViewName): boolean {
-    if (currentView === id) return true;
-    // Memory group: if any memory-* is active, highlight memory-health as default
-    if (id === 'memory-health' && currentView.startsWith('memory-')) return true;
-    return false;
-  }
-
-  function getActiveMemoryView(): ViewName {
-    if (currentView === 'memory' || currentView.startsWith('memory-')) {
-      return currentView;
-    }
-    return 'memory-health';
-  }
 </script>
 
 <nav class="sidebar-nav">
@@ -153,14 +118,10 @@
           {#each group.children as child}
             <button
               class="nav-item"
-              class:active={isActive(child.id)}
+              class:active={currentView === child.id}
               onclick={() => select(child.id)}
             >
-              {#if child.id.startsWith('memory-')}
-                <span class="leaf-icon dot"></span>
-              {:else}
-                <svelte:component this={getIcon(child.id)} />
-              {/if}
+              <span class="leaf-icon dot"></span>
               <span>{child.label}</span>
             </button>
           {/each}
@@ -185,7 +146,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 6px 16px;
+    padding: 8px 16px;
     color: var(--fg-dim);
     cursor: pointer;
     transition: color 0.15s, background 0.15s;
@@ -193,9 +154,9 @@
     background: none;
     font: inherit;
     font-size: 11px;
-    font-weight: 600;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.6px;
     width: 100%;
   }
 
@@ -213,16 +174,17 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 8px 16px 8px 20px;
+    padding: 7px 16px 7px 24px;
     color: var(--fg-dim);
     cursor: pointer;
     transition: color 0.15s, background 0.15s;
     border: none;
     background: none;
     font: inherit;
-    font-size: 14px;
+    font-size: 13px;
     width: 100%;
     border-left: 3px solid transparent;
+    text-align: left;
   }
 
   .nav-item:hover {
@@ -236,19 +198,12 @@
     border-left-color: var(--accent);
   }
 
-  .nav-item :global(svg) {
-    width: 18px;
-    height: 18px;
-    flex-shrink: 0;
-  }
-
   .leaf-icon.dot {
-    width: 6px;
-    height: 6px;
+    width: 5px;
+    height: 5px;
     border-radius: 50%;
     background: var(--fg-dim);
     flex-shrink: 0;
-    margin-left: 6px;
   }
 
   .nav-item.active .leaf-icon.dot {
