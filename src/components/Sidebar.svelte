@@ -11,9 +11,11 @@
     | 'infra-heartbeat'
     | 'infra-memory'
     | 'infra-pszichologia'
+    | 'infra-security'
     | 'infra-sessions'
     | 'infra-tokenhasznalat'
     // Agentek
+    | 'agent-live'
     | 'agent-vegrehajtok'
     | 'agent-tanacsadok'
     | 'agent-specialistak';
@@ -52,6 +54,7 @@
         { type: 'leaf', id: 'infra-heartbeat', label: 'Heartbeat' },
         { type: 'leaf', id: 'infra-memory', label: 'Memória' },
         { type: 'leaf', id: 'infra-pszichologia', label: 'Pszichológia' },
+        { type: 'leaf', id: 'infra-security', label: 'Security' },
         { type: 'leaf', id: 'infra-sessions', label: 'Sessions' },
         { type: 'leaf', id: 'infra-tokenhasznalat', label: 'Tokenhasználat' },
       ],
@@ -60,6 +63,7 @@
       type: 'group',
       label: 'Agentek',
       children: [
+        { type: 'leaf', id: 'agent-live', label: 'Live' },
         { type: 'leaf', id: 'agent-vegrehajtok', label: 'Végrehajtók' },
         { type: 'leaf', id: 'agent-tanacsadok', label: 'Tanácsadók' },
         { type: 'leaf', id: 'agent-specialistak', label: 'Specialisták' },

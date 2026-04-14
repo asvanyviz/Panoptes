@@ -8,6 +8,8 @@
   import InfraCron from './views/InfraCron.svelte';
   import InfraHeartbeat from './views/InfraHeartbeat.svelte';
   import InfraPszichologia from './views/InfraPszichologia.svelte';
+  import InfraSecurity from './views/InfraSecurity.svelte';
+  import AgentLive from './views/AgentLive.svelte';
   import InfraToken from './views/InfraToken.svelte';
   import AgentVegrehajtok from './views/AgentVegrehajtok.svelte';
   import AgentTanacsadok from './views/AgentTanacsadok.svelte';
@@ -21,8 +23,10 @@
     | 'infra-heartbeat'
     | 'infra-memory'
     | 'infra-pszichologia'
+    | 'infra-security'
     | 'infra-sessions'
     | 'infra-tokenhasznalat'
+    | 'agent-live'
     | 'agent-vegrehajtok'
     | 'agent-tanacsadok'
     | 'agent-specialistak';
@@ -54,10 +58,14 @@
       <InfraPszichologia />
     {:else if currentView === 'infra-pszichologia'}
       <InfraPszichologia />
+    {:else if currentView === 'infra-security'}
+      <InfraSecurity />
     {:else if currentView === 'infra-sessions'}
       <InfraPszichologia />
     {:else if currentView === 'infra-tokenhasznalat'}
       <InfraToken />
+    {:else if currentView === 'agent-live'}
+      <AgentLive />
     {:else if currentView === 'agent-vegrehajtok'}
       <AgentVegrehajtok />
     {:else if currentView === 'agent-tanacsadok'}
