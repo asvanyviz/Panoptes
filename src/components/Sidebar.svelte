@@ -6,7 +6,6 @@
     | 'rendszer-attekintes'
     | 'rendszer-problemak'
     // Infrastruktúra
-    | 'infra-auditok'
     | 'infra-cron'
     | 'infra-heartbeat'
     | 'infra-memory'
@@ -18,7 +17,13 @@
     | 'agent-live'
     | 'agent-vegrehajtok'
     | 'agent-tanacsadok'
-    | 'agent-specialistak';
+    | 'agent-specialistak'
+    // Jelentések
+    | 'jelentes-bejelentesek'
+    | 'jelentes-eszkalaciok'
+    | 'jelentes-napi'
+    | 'jelentes-heti'
+    | 'jelentes-havi';
 
   let { currentView = $bindable('rendszer-attekintes') }: { currentView: ViewName } = $props();
 
@@ -49,7 +54,6 @@
       type: 'group',
       label: 'Infrastruktúra',
       children: [
-        { type: 'leaf', id: 'infra-auditok', label: 'Auditok' },
         { type: 'leaf', id: 'infra-cron', label: 'Cron jobs' },
         { type: 'leaf', id: 'infra-heartbeat', label: 'Heartbeat' },
         { type: 'leaf', id: 'infra-memory', label: 'Memória' },
@@ -67,6 +71,17 @@
         { type: 'leaf', id: 'agent-vegrehajtok', label: 'Végrehajtók' },
         { type: 'leaf', id: 'agent-tanacsadok', label: 'Tanácsadók' },
         { type: 'leaf', id: 'agent-specialistak', label: 'Specialisták' },
+      ],
+    },
+    {
+      type: 'group',
+      label: 'Jelentések',
+      children: [
+        { type: 'leaf', id: 'jelentes-bejelentesek', label: 'Bejelentések' },
+        { type: 'leaf', id: 'jelentes-eszkalaciok', label: 'Eszkalációk' },
+        { type: 'leaf', id: 'jelentes-napi', label: 'Napi jelentések' },
+        { type: 'leaf', id: 'jelentes-heti', label: 'Heti jelentések' },
+        { type: 'leaf', id: 'jelentes-havi', label: 'Havi jelentések' },
       ],
     },
   ];

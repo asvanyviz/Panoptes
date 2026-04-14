@@ -2,23 +2,30 @@
   import './app.css';
   import Sidebar from './components/Sidebar.svelte';
   import ActivityLog from './components/ActivityLog.svelte';
+  // Rendszer
   import Attekintes from './views/Attekintes.svelte';
   import Problemak from './views/Problemak.svelte';
-  import InfraAuditok from './views/InfraAuditok.svelte';
+  // Infrastruktúra
   import InfraCron from './views/InfraCron.svelte';
   import InfraHeartbeat from './views/InfraHeartbeat.svelte';
   import InfraPszichologia from './views/InfraPszichologia.svelte';
   import InfraSecurity from './views/InfraSecurity.svelte';
-  import AgentLive from './views/AgentLive.svelte';
   import InfraToken from './views/InfraToken.svelte';
+  // Agentek
+  import AgentLive from './views/AgentLive.svelte';
   import AgentVegrehajtok from './views/AgentVegrehajtok.svelte';
   import AgentTanacsadok from './views/AgentTanacsadok.svelte';
   import AgentSpecialistak from './views/AgentSpecialistak.svelte';
+  // Jelentések
+  import JelentesBejelentesek from './views/JelentesBejelentesek.svelte';
+  import JelentesEszkalaciok from './views/JelentesEszkalaciok.svelte';
+  import JelentesNapi from './views/JelentesNapi.svelte';
+  import JelentesHeti from './views/JelentesHeti.svelte';
+  import JelentesHavi from './views/JelentesHavi.svelte';
 
   type ViewName =
     | 'rendszer-attekintes'
     | 'rendszer-problemak'
-    | 'infra-auditok'
     | 'infra-cron'
     | 'infra-heartbeat'
     | 'infra-memory'
@@ -29,7 +36,12 @@
     | 'agent-live'
     | 'agent-vegrehajtok'
     | 'agent-tanacsadok'
-    | 'agent-specialistak';
+    | 'agent-specialistak'
+    | 'jelentes-bejelentesek'
+    | 'jelentes-eszkalaciok'
+    | 'jelentes-napi'
+    | 'jelentes-heti'
+    | 'jelentes-havi';
 
   let currentView: ViewName = $state('rendszer-attekintes');
 </script>
@@ -48,8 +60,6 @@
       <Attekintes />
     {:else if currentView === 'rendszer-problemak'}
       <Problemak />
-    {:else if currentView === 'infra-auditok'}
-      <InfraAuditok />
     {:else if currentView === 'infra-cron'}
       <InfraCron />
     {:else if currentView === 'infra-heartbeat'}
@@ -72,6 +82,16 @@
       <AgentTanacsadok />
     {:else if currentView === 'agent-specialistak'}
       <AgentSpecialistak />
+    {:else if currentView === 'jelentes-bejelentesek'}
+      <JelentesBejelentesek />
+    {:else if currentView === 'jelentes-eszkalaciok'}
+      <JelentesEszkalaciok />
+    {:else if currentView === 'jelentes-napi'}
+      <JelentesNapi />
+    {:else if currentView === 'jelentes-heti'}
+      <JelentesHeti />
+    {:else if currentView === 'jelentes-havi'}
+      <JelentesHavi />
     {/if}
   </main>
 
