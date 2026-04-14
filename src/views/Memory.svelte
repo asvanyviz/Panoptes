@@ -9,8 +9,14 @@
   let error: string | null = $state(null);
   let lastRefresh = $state('');
 
-  /** Which tab is active */
-  let activeTab: 'health' | 'insights' | 'learnings' = $state('health');
+  /** Which tab is active — can be set by parent via prop */
+  let { activeTab: activeTabProp = 'health' }: { activeTab?: 'health' | 'insights' | 'learnings' } = $props();
+  let activeTab: 'health' | 'insights' | 'learnings' = $state(activeTabProp);
+
+  /** Sync parent prop to local state */
+  $effect(() => {
+    activeTab = activeTabProp;
+  });
 
   async function fetchData() {
     try {

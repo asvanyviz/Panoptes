@@ -7,9 +7,15 @@
   import Memory from './views/Memory.svelte';
   import Sessions from './views/Sessions.svelte';
 
-  type ViewName = 'overview' | 'dashboard' | 'system' | 'agents' | 'memory' | 'sessions' | 'settings';
+  type ViewName = 'overview' | 'dashboard' | 'system' | 'agents' | 'memory' | 'memory-health' | 'memory-insights' | 'memory-learnings' | 'sessions' | 'settings';
 
   let currentView: ViewName = $state('overview');
+
+  function getActiveMemoryTab(): 'health' | 'insights' | 'learnings' {
+    if (currentView === 'memory-insights') return 'insights';
+    if (currentView === 'memory-learnings') return 'learnings';
+    return 'health';
+  }
 </script>
 
 <div class="dashboard">
@@ -32,8 +38,8 @@
       <System />
     {:else if currentView === 'agents'}
       <Agents />
-    {:else if currentView === 'memory'}
-      <Memory />
+    {:else if currentView === 'memory' || currentView === 'memory-health' || currentView === 'memory-insights' || currentView === 'memory-learnings'}
+      <Memory activeTab={getActiveMemoryTab()} />
     {:else if currentView === 'sessions'}
       <Sessions />
     {:else if currentView === 'settings'}
