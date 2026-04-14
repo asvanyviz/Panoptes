@@ -18,16 +18,31 @@ export interface GatewayInfo {
   url?: string;
 }
 
+export interface TokenUsage {
+  total: number | null;
+  remaining: number | null;
+  percentUsed: number | null;
+  input: number | null;
+  output: number | null;
+  cacheRead: number | null;
+}
+
+export interface ModelConfig {
+  primary: string;
+  fallbacks: string[];
+}
+
 export interface AgentSummary {
   id: string;
   name: string;
   status: 'active' | 'idle' | 'sleeping' | 'offline' | 'error';
   model: string;
-  session: string | null;
-  channel: string | null;
+  modelConfig: ModelConfig;
+  sessionsCount: number;
+  bootstrapPending: boolean;
   lastActiveAgeMs: number | null;
   currentTask: string | null;
-  error?: string;
+  tokenUsage: TokenUsage | null;
 }
 
 export interface DashboardResponse {

@@ -1,10 +1,13 @@
 <script lang="ts">
   import HomeIcon from '../lib/icons/HomeIcon.svelte';
   import DashboardIcon from '../lib/icons/DashboardIcon.svelte';
-  import SettingsIcon from '../lib/icons/SettingsIcon.svelte';
   import MonitorIcon from '../lib/icons/MonitorIcon.svelte';
+  import UsersIcon from '../lib/icons/UsersIcon.svelte';
+  import BrainIcon from '../lib/icons/BrainIcon.svelte';
+  import SessionsIcon from '../lib/icons/SessionsIcon.svelte';
+  import SettingsIcon from '../lib/icons/SettingsIcon.svelte';
 
-  type ViewName = 'overview' | 'dashboard' | 'system' | 'settings';
+  export type ViewName = 'overview' | 'dashboard' | 'system' | 'agents' | 'memory' | 'sessions' | 'settings';
 
   let { currentView = $bindable('overview') }: { currentView: ViewName } = $props();
 
@@ -18,6 +21,9 @@
     { id: 'overview', label: 'Overview', icon: HomeIcon },
     { id: 'dashboard', label: 'Dashboard', icon: DashboardIcon },
     { id: 'system', label: 'Rendszer', icon: MonitorIcon },
+    { id: 'agents', label: 'Agentek', icon: UsersIcon },
+    { id: 'memory', label: 'Memória', icon: BrainIcon },
+    { id: 'sessions', label: 'Sessions', icon: SessionsIcon },
     { id: 'settings', label: 'Settings', icon: SettingsIcon },
   ];
 

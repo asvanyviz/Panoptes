@@ -3,8 +3,11 @@
   import Sidebar from './components/Sidebar.svelte';
   import ActivityLog from './components/ActivityLog.svelte';
   import System from './views/System.svelte';
+  import Agents from './views/Agents.svelte';
+  import Memory from './views/Memory.svelte';
+  import Sessions from './views/Sessions.svelte';
 
-  type ViewName = 'overview' | 'dashboard' | 'system' | 'settings';
+  type ViewName = 'overview' | 'dashboard' | 'system' | 'agents' | 'memory' | 'sessions' | 'settings';
 
   let currentView: ViewName = $state('overview');
 </script>
@@ -24,9 +27,15 @@
       <p>Welcome to Panoptes — system monitoring & control.</p>
     {:else if currentView === 'dashboard'}
       <h1>Dashboard</h1>
-      <p>Agent dashboard — coming soon.</p>
+      <p>Agent dashboard — all agents at a glance.</p>
     {:else if currentView === 'system'}
       <System />
+    {:else if currentView === 'agents'}
+      <Agents />
+    {:else if currentView === 'memory'}
+      <Memory />
+    {:else if currentView === 'sessions'}
+      <Sessions />
     {:else if currentView === 'settings'}
       <h1>Settings</h1>
       <p>Settings — coming soon.</p>
